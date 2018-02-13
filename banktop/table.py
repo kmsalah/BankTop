@@ -1,6 +1,6 @@
 import json
 import datetime
-from banktop.prettytable import prettytable
+import prettytable
 import os
 import sys
 
