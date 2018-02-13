@@ -11,6 +11,8 @@ Transactions that store the amount and description, to be stored in a Pocket's l
 
 
 class Transaction:
+    # TODO(kmsalah) Don't use class variables unless static and constant. These are
+    # essentially static.
     amountM = 0
     descriptionM = ''
     dateTimeM = ''
@@ -27,6 +29,9 @@ class Transaction:
             date = newTime.strftime("%m/%d/%y")
             self.dateTimeM = date
 
+    # TODO(kmsalah) revise. Python is not java, getters and setters are kinda
+    # useless. For private instant variables, consider the `_variable` format.
+    # Look into @property attributes.
     def getAmount(self):
         return self.amountM
 
@@ -184,8 +189,6 @@ class Table:
 
     def addPocket(self, newPocket):
         self.pocketsM.append(newPocket)
-        #newAmount = newPocket.getBalance()
-        #self.totalAmountM += newAmount
 
     def getTotalAmount(self):
         self.calcTotalAmount()
@@ -227,6 +230,7 @@ class Table:
         else:
             del self.pocketsM[pocketIndex]
 
+    # TODO(kmsalah) consider using `__str__`
     def print(self):
         t = prettytable.PrettyTable(['Pocket', 'Balance', 'Percentage'])
         for i in range(0, self.getTableSize()):
@@ -251,9 +255,3 @@ class Table:
                 + "    Debt: " + str(self.getDebt()))
         print("[A] Add/update pocket [T] Add Transaction [L] Print a Ledger [Q]Exit")
 
-
-'''
-		for i in range(0, self.getTableSize()):
-			print(self.getPocket(i).nameM)
-			print(self.getPocket(i).ledgerM)
-'''

@@ -6,7 +6,7 @@ reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
     name='banktop',
-    version='1.0',
+    version='1.1',
     license='MIT',
     long_description=open('README.md').read(),
     zip_safe = False,
