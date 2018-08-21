@@ -4,7 +4,7 @@ import tty
 import os
 import time
 
-from banktop import table
+import table
 import datetime
 
 def getch():
@@ -26,13 +26,18 @@ def getch():
 
 def addPocket(myTable):
     os.system('clear')
-    response = input("Enter the pocket name and balance  (Name,Balance) \n")
-    if len(response):
-        data = response.split(',')
-        # TODO(kmsalah) Confirm data is the correct size.
+    userInput = input("Enter the pocket name and balance  (Name,Balance) \n")
+    if len(userInput):
+        data = userInput.split(',')
         name = data[0]
-        # TODO(kmsalah) Handle parse failure correctly.
-        balance = float(data[1])
+        if(len(name) == 0): #checking name 
+            return "You did not enter a pocket name" 
+
+        try:
+            balance = float(data[1])
+        except:
+            return "You did not enter a valid balance"
+
         tablePockets = myTable.getPockets()
         # TODO(kmsalah) Implement a hashmap so linear lookup is not needed.
         for tablePocket in tablePockets:
@@ -47,20 +52,28 @@ def addPocket(myTable):
 
 def addTransaction(myTable):
     os.system('clear')
-    response = input(
+    userInput = input(
         "Enter pocket name, transaction amount, and description (Name,Amount,Description) \n")
-    if len(response):
-        data = response.split(',')
-        # TODO(kmsalah) Confirm data is the correct size.
+    if len(userInput):
+        data = userInput.split(',')
         name = data[0]
-        # TODO(kmsalah) Handle parse failure correctly.
-        amount = float(data[1])
+        if(len(name) == 0): #checking to see user entered pocket name 
+           return "You did not enter a pocket name"
+
+        try:
+            amount = float(data[1])
+        except:
+            return "You did not enter a valid transaction amount"
         description = data[2]
         dateTime = datetime.datetime.now()
         newTransaction = table.Transaction(amount, description, dateTime)
+
         pocket = myTable.getPocketByName(name)
-        print(pocket)
-        # TODO(kmsalah) Ensure that newTransaction is not None.
+        if pocket is None:
+            return "The pocket you entered does not exist."
+        
+        if newTransaction is None:
+            return "There was an error creating your new transaction, try again."
         pocket.addTransaction(newTransaction)
 
 
@@ -94,11 +107,17 @@ def main():
 
     def quit(*args):
         running = False
+        print(running)
         myTable.save()
-        print('q')
-
+        #print('q')
+    msg = ' '
     while(running):
-        print("banktop 1.0")
+        if msg is None:
+            print(" ")
+        else:
+            print(value)
+        print(msg) 
+        print("banktop 1.1")
         myTable.print()
         
         # Alternate for switch.
@@ -110,7 +129,7 @@ def main():
             "r": removePocket,
             "q": quit
         }
-        functions[char](myTable)
+        msg = functions[char](myTable) #not sure if this is smart, but passing back error messages to loop to be displayed before table reprint
         os.system('clear')
 
 if __name__ == "__main__":
