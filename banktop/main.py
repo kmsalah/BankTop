@@ -106,17 +106,15 @@ def main():
     myTable = table.Table()
 
     def quit(*args):
-        running = False
-        print(running)
         myTable.save()
-        #print('q')
+        return False
+        
     msg = ' '
     while(running):
         if msg is None:
             print(" ")
         else:
-            print(value)
-        print(msg) 
+            print(msg)
         print("banktop 1.1")
         myTable.print()
         
@@ -129,7 +127,11 @@ def main():
             "r": removePocket,
             "q": quit
         }
-        msg = functions[char](myTable) #not sure if this is smart, but passing back error messages to loop to be displayed before table reprint
+
+        if char in functions:
+            msg = functions[char](myTable) #not sure if this is smart, but passing back error messages to loop to be displayed before table reprint
+        if msg == False: #we just quit
+            running = False
         os.system('clear')
 
 if __name__ == "__main__":
